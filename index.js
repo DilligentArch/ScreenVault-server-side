@@ -75,6 +75,33 @@ async function run() {
 
 
 
+
+
+
+
+
+
+
+
+
+    //new database
+    const movieCollection2=client.db('MovieDB').collection('Favmovies')
+    app.post('/favorites',async(req,res)=>{
+       const newMovie=req.body;
+       const  result= await movieCollection2.insertOne(newMovie);
+       res.send(result);
+    });
+    app.get('/favorites/:email', async (req, res) => {
+      const userEmail=req.params.email;
+      const query={userEmail}
+      const result =await  movieCollection2.find(query).toArray();
+      res.send(result);
+
+
+    });
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
