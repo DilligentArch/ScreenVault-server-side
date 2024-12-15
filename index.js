@@ -99,6 +99,16 @@ async function run() {
 
 
     });
+    app.delete('/favorites/:id', async (req, res) => {
+      const _id=req.params.id;
+      const query={_id}
+      const result =await  movieCollection2.deleteOne(query);
+      res.send(result);
+         
+    });
+    
+
+
 
 
 
