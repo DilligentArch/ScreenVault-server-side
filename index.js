@@ -71,7 +71,7 @@ async function run() {
     })
 
 
-    app.put("/reviews/:id", async (req, res) => {
+    app.put("/movies/:id", async (req, res) => {
       const id = req.params.id;
       const review = req.body;
 
@@ -79,21 +79,30 @@ async function run() {
       const options = { upsert: true };
       const updateReview = {
         $set: {
-          coverImage: review.coverImage,
-          gameTitle: review.gameTitle,
-          description: review.description,
+          poster: review.poster,
+          title: review.title,
+          summary: review. summary,
           rating: review.rating,
-          year: review.year,
+          releaseYear: review.releaseYear,
           genre: review.genre,
           userEmail: review.userEmail,
-          userName: review.userName,
+          duration:review.duration
+        
         },
       };
 
-      
+      const result = await movieCollection.updateOne(filter, updateReview, options);
+      res.send(result);
     });
 
 
+  
+  
+    
+    
+    
+    
+    
 
 
 
