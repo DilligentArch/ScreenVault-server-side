@@ -1,7 +1,7 @@
-const express= require('express');
-const cors= require('cors');
+const express = require('express');
+const cors = require('cors');
 require('dotenv').config()
-const app=express();
+const app = express();
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
@@ -30,48 +30,50 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const movieCollection=client.db('MovieDB').collection('movies')
-    app.post('/movies',async(req,res)=>{
-       const newMovie=req.body;
-       const  result= await movieCollection.insertOne(newMovie);
-       res.send(result);
+    const movieCollection = client.db('MovieDB').collection('movies')
+    app.post('/movies', async (req, res) => {
+      const newMovie = req.body;
+      const result = await movieCollection.insertOne(newMovie);
+      res.send(result);
     });
 
-    app.get('/movies',async(req,res)=>{
-      const cursor=movieCollection.find();
-      const result=await cursor.toArray();
+    app.get('/movies', async (req, res) => {
+      const cursor = movieCollection.find();
+      const result = await cursor.toArray();
       res.send(result);
     });
 
     app.get('/movies/top-rated', async (req, res) => {
-      
-        const cursor = movieCollection
-          .find()
-          .sort({ rating: -1 })
-          .limit(6);
-    
-        const result = await cursor.toArray();
-        res.send(result);
-    
+
+      const cursor = movieCollection
+        .find()
+        .sort({ rating: -1 })
+        .limit(6);
+
+      const result = await cursor.toArray();
+      res.send(result);
+
     });
     app.get('/movies/:id', async (req, res) => {
-      const id=req.params.id;
-      const query={_id: new ObjectId(id)}
-      const result =await  movieCollection.findOne(query);
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await movieCollection.findOne(query);
       res.send(result);
 
 
     });
-    app.delete('/movies/:id',async(req,res)=>{
-      const id=req.params.id;
-      const query={_id:new ObjectId(id)}
-      const result =await  movieCollection.deleteOne(query);
+    app.delete('/movies/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await movieCollection.deleteOne(query);
       res.send(result);
 
     })
 
-    
 
+    app.put("/reviews/:id", async (req, res) => {
+   
+    });
 
 
 
@@ -85,28 +87,28 @@ async function run() {
 
 
     //new database
-    const movieCollection2=client.db('MovieDB').collection('Favmovies')
-    app.post('/favorites',async(req,res)=>{
-       const newMovie=req.body;
-       const  result= await movieCollection2.insertOne(newMovie);
-       res.send(result);
+    const movieCollection2 = client.db('MovieDB').collection('Favmovies')
+    app.post('/favorites', async (req, res) => {
+      const newMovie = req.body;
+      const result = await movieCollection2.insertOne(newMovie);
+      res.send(result);
     });
     app.get('/favorites/:email', async (req, res) => {
-      const userEmail=req.params.email;
-      const query={userEmail}
-      const result =await  movieCollection2.find(query).toArray();
+      const userEmail = req.params.email;
+      const query = { userEmail }
+      const result = await movieCollection2.find(query).toArray();
       res.send(result);
 
 
     });
     app.delete('/favorites/:id', async (req, res) => {
-      const _id=req.params.id;
-      const query={_id}
-      const result =await  movieCollection2.deleteOne(query);
+      const _id = req.params.id;
+      const query = { _id }
+      const result = await movieCollection2.deleteOne(query);
       res.send(result);
-         
+
     });
-    
+
 
 
 
@@ -125,10 +127,10 @@ run().catch(console.dir);
 
 
 
-app.get('/', (req,res)=>{
-    res.send('Succesfull');
+app.get('/', (req, res) => {
+  res.send('Succesfull');
 
 })
-app.listen(port,()=>{
-    console.log("running")
+app.listen(port, () => {
+  console.log("running")
 })
